@@ -1,4 +1,4 @@
-package com.inkenka.miniimageloader;
+package com.inkenka.miniimageloader.library;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -22,7 +22,8 @@ public class MiniImageLoaderExecutor extends ThreadPoolExecutor {
 
         @Override
         public Thread newThread(Runnable r) {
-            return new Thread(r, "MiniImageLoader#" + mCount.getAndIncrement());    // 标记MiniImageLoader的线程名称
+            // 标记MiniImageLoader的线程名称
+            return new Thread(r, "MiniImageLoader#" + mCount.getAndIncrement());
         }
     };
 

@@ -1,4 +1,4 @@
-package com.inkenka.miniimageloader;
+package com.inkenka.miniimageloader.library;
 
 import android.graphics.Bitmap;
 import android.widget.ImageView;
@@ -9,6 +9,7 @@ import android.widget.ImageView;
 public class MiniImageLoader {
 
     public void loadImage(final String url, final ImageView imageView){
+        if(null == imageView) return;
 
         MiniImageLoaderExecutor.getInstance().execute(new Job(url, new Job.MainThreadCallback() {
             @Override

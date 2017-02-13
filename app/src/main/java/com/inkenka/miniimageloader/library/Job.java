@@ -1,4 +1,4 @@
-package com.inkenka.miniimageloader;
+package com.inkenka.miniimageloader.library;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
