@@ -19,7 +19,7 @@
         </activity>
 
         <activity android:name=".demo.MultiItemList.ListViewDemoActivity"/>
-        <activity android:name=".demo.SingleImageDemoActivity"/>
+        <activity android:name=".demo.SingleImageView.SingleImageDemoActivity"/>
     </application>
 
 </manifest>

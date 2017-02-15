@@ -63,9 +63,9 @@ public class ThreePicItemView extends LinearLayout implements DataBinder {
             if (!TextUtils.isEmpty(pic1Url) && !TextUtils.isEmpty(pic2Url) && !TextUtils
                 .isEmpty(pic3Url) && !TextUtils.isEmpty(title)) {
                 mTextView.setText(title);
-                new MiniImageLoader().loadImage(pic1Url, mPic1View);
-                new MiniImageLoader().loadImage(pic1Url, mPic2View);
-                new MiniImageLoader().loadImage(pic1Url, mPic3View);
+                MiniImageLoader.get().loadImage(pic1Url, mPic1View);
+                MiniImageLoader.get().loadImage(pic1Url, mPic2View);
+                MiniImageLoader.get().loadImage(pic1Url, mPic3View);
             } else {
                 mTextView.setText("");
                 mPic1View.setImageBitmap(null);

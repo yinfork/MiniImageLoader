@@ -51,7 +51,7 @@ public class OnePicItemView extends RelativeLayout implements DataBinder{
 
             if(!TextUtils.isEmpty(imgUrl) && !TextUtils.isEmpty(title)){
                 mTextView.setText(title);
-                new MiniImageLoader().loadImage(data.getImages()[0],mImageView);
+                MiniImageLoader.get().loadImage(data.getImages()[0],mImageView);
             } else {
                 mTextView.setText("");
                 mImageView.setImageBitmap(null);

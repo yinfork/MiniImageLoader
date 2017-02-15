@@ -2,6 +2,7 @@ package com.inkenka.miniimageloader.demo;
 
 import com.inkenka.miniimageloader.R;
 import com.inkenka.miniimageloader.demo.MultiItemList.ListViewDemoActivity;
+import com.inkenka.miniimageloader.demo.SingleImageView.SingleImageDemoActivity;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
