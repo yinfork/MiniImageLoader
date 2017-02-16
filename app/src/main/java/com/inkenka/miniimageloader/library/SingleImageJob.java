@@ -27,16 +27,16 @@ public class SingleImageJob extends Job{
     private MemoryLruCache mMemoryLruCache;
 
 
-    public SingleImageJob(String url, MemoryLruCache memoryLruCache, MainThreadCallback callback) {
-        mUrl = url;
-        mMemoryLruCache = memoryLruCache;
-        mImageHandler = new ImageHandler(callback);
+    public SingleImageJob() {
+
     }
 
 
     @Override
-    protected void init() {
-
+    protected void init(String url, MemoryLruCache memoryLruCache, MainThreadCallback callback) {
+        mUrl = url;
+        mMemoryLruCache = memoryLruCache;
+        mImageHandler = new ImageHandler(callback);
     }
 
     @Override
