@@ -13,7 +13,11 @@ import android.os.Message;
 public abstract class Job implements Runnable {
 
 
-    abstract protected void init(String url, MemoryLruCache memoryLruCache, DiskCache<Bitmap> diskCache,
+    abstract protected void init(String url,
+        MemoryLruCache memoryLruCache,
+        DiskCache<Bitmap> diskCache,
+        int reqWidth,
+        int reqHeight,
         MainThreadCallback callback);
 
     abstract protected void runWrapped();

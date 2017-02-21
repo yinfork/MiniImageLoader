@@ -21,19 +21,15 @@ import java.net.URL;
 public class SingleImageJob extends Job {
 
     private static final int MSG_COMPLETE = 1;
-
     private static final int MSG_EXCEPTION = 2;
-
     private static final int MSG_CANCELLED = 3;
 
     private String mUrl;
-
     private ImageHandler mImageHandler;
-
     private MemoryLruCache mMemoryLruCache;
-
     private DiskCache<Bitmap> mDiskCache;
-
+    private int mReqWidth;
+    private int mReqHeight;
 
     public SingleImageJob() {
 
@@ -44,11 +40,15 @@ public class SingleImageJob extends Job {
     protected void init(@NonNull String url,
         @NonNull MemoryLruCache memoryLruCache,
         @NonNull DiskCache<Bitmap> diskCache,
+        int reqWidth,
+        int reqHeight,
         @NonNull MainThreadCallback callback) {
 
         mUrl = url;
         mMemoryLruCache = memoryLruCache;
         mDiskCache = diskCache;
+        mReqWidth = reqWidth;
+        mReqHeight = reqHeight;
         mImageHandler = new ImageHandler(callback);
     }
 
@@ -67,12 +67,13 @@ public class SingleImageJob extends Job {
                 bitmap = mMemoryLruCache.get(mUrl);
             }
 
-            if(null == bitmap && null != mDiskCache) {
+            if (null == bitmap && null != mDiskCache) {
                 bitmap = mDiskCache.get(mUrl);
             }
 
             if (null == bitmap) {
-                bitmap = NetworkManager.requestImageFromUrl(mUrl,mDiskCache);
+                bitmap = NetworkManager
+                    .requestImageFromUrl(mUrl, mDiskCache, mReqWidth, mReqHeight);
                 mMemoryLruCache.put(mUrl, bitmap);
             }
 

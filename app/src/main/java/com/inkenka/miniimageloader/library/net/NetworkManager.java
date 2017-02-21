@@ -1,5 +1,6 @@
 package com.inkenka.miniimageloader.library.net;
 
+import com.inkenka.miniimageloader.library.BitmapUtil;
 import com.inkenka.miniimageloader.library.cache.DiskCache;
 
 import android.graphics.Bitmap;
@@ -19,7 +20,7 @@ import java.net.URL;
  */
 public class NetworkManager {
 
-    public static Bitmap requestImageFromUrl(String imageUrl, DiskCache diskCache) {
+    public static Bitmap requestImageFromUrl(String imageUrl, DiskCache diskCache, int reqWidth, int reqHeight) {
         HttpURLConnection urlConnection = null;
         BufferedInputStream inputStream = null;
         try {
@@ -33,7 +34,7 @@ public class NetworkManager {
                 diskCache.put(imageUrl,new DiskCacheWriter(inputStream));
             }
 
-            return BitmapFactory.decodeStream(inputStream);
+            return BitmapUtil.getCompressedBitmap(inputStream,reqWidth,reqHeight);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

@@ -54,7 +54,8 @@ public class MiniImageLoader {
     public void loadImage(final String url, final ImageView imageView){
         if(null == imageView) return;
 
-        Job job = mJobFactory.obtainJob(url, mMemoryLruCache, mDiskCache, new MainThreadCallback() {
+        Job job = mJobFactory.obtainJob(url, mMemoryLruCache, mDiskCache,
+            imageView.getWidth(),imageView.getHeight(), new MainThreadCallback() {
             @Override
             public void onSuccessed(Bitmap bitmap) {
                 if (null != bitmap) {

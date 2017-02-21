@@ -21,9 +21,14 @@ public class JobFactory {
         });
 
 
-    public Job obtainJob(String url, MemoryLruCache memoryLruCache, DiskCache diskCache, MainThreadCallback callback){
+    public Job obtainJob(String url,
+        MemoryLruCache memoryLruCache,
+        DiskCache diskCache,
+        int reqWidth,
+        int reqHeight,
+        MainThreadCallback callback) {
         SingleImageJob result = pool.acquire();
-        result.init(url, memoryLruCache, diskCache, callback);
+        result.init(url, memoryLruCache, diskCache, reqWidth, reqHeight, callback);
         return result;
     }
 }
