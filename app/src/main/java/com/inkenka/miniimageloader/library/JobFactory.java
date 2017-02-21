@@ -1,5 +1,6 @@
 package com.inkenka.miniimageloader.library;
 
+import com.inkenka.miniimageloader.library.cache.DiskCache;
 import com.inkenka.miniimageloader.library.cache.MemoryLruCache;
 
 import android.support.v4.util.Pools;
@@ -20,9 +21,9 @@ public class JobFactory {
         });
 
 
-    public Job obtainJob(String url, MemoryLruCache memoryLruCache, MainThreadCallback callback){
+    public Job obtainJob(String url, MemoryLruCache memoryLruCache, DiskCache diskCache, MainThreadCallback callback){
         SingleImageJob result = pool.acquire();
-        result.init(url, memoryLruCache, callback);
+        result.init(url, memoryLruCache, diskCache, callback);
         return result;
     }
 }

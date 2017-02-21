@@ -1,5 +1,6 @@
 package com.inkenka.miniimageloader.library;
 
+import com.inkenka.miniimageloader.library.cache.DiskCache;
 import com.inkenka.miniimageloader.library.cache.MemoryLruCache;
 
 import android.graphics.Bitmap;
@@ -12,11 +13,12 @@ import android.os.Message;
 public abstract class Job implements Runnable {
 
 
-    abstract protected void init(String url, MemoryLruCache memoryLruCache, MainThreadCallback callback);
+    abstract protected void init(String url, MemoryLruCache memoryLruCache, DiskCache<Bitmap> diskCache,
+        MainThreadCallback callback);
+
     abstract protected void runWrapped();
+
     abstract protected void cancel();
-
-
 
 
     @Override

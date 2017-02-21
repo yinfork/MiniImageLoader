@@ -1,9 +1,14 @@
 package com.inkenka.miniimageloader.library;
 
+import com.inkenka.miniimageloader.library.cache.DiskCache;
+import com.inkenka.miniimageloader.library.cache.DiskLruCacheWrapper;
 import com.inkenka.miniimageloader.library.cache.MemoryLruCache;
 import com.inkenka.miniimageloader.library.cache.MemoryLruCacheImpl;
+import com.inkenka.miniimageloader.library.cache.NoDiskCache;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
 import android.widget.ImageView;
 
 /**
@@ -21,13 +26,13 @@ public class MiniImageLoader {
     private MemoryLruCache mMemoryLruCache;
     private JobFactory mJobFactory;
 
-    public static MiniImageLoader get() {
+    private DiskCache mDiskCache;
+
+    public static MiniImageLoader get(@NonNull Context context) {
         if (mInstance == null) {
             synchronized (MiniImageLoader.class) {
                 if (mInstance == null) {
-                    mInstance = new MiniImageLoader(
-                        new MemoryLruCacheImpl(MEMORY_CACHE_SIZE),
-                        new JobFactory());
+                    mInstance = new MiniImageLoader(context);
                 }
             }
         }
@@ -35,16 +40,21 @@ public class MiniImageLoader {
         return mInstance;
     }
 
-    private MiniImageLoader(MemoryLruCache memoryLruCache,
-                    JobFactory jobFactory){
-        this.mMemoryLruCache = memoryLruCache;
-        this.mJobFactory = jobFactory;
+    private MiniImageLoader(Context context){
+        this.mMemoryLruCache =  new MemoryLruCacheImpl(MEMORY_CACHE_SIZE);
+        this.mJobFactory = new JobFactory();
+
+        DiskCache diskCache = DiskLruCacheWrapper.build(context.getApplicationContext());
+        if(null == diskCache){
+            diskCache = new NoDiskCache();
+        }
+        this.mDiskCache = diskCache;
     }
 
     public void loadImage(final String url, final ImageView imageView){
         if(null == imageView) return;
 
-        Job job = mJobFactory.obtainJob(url, mMemoryLruCache,new MainThreadCallback() {
+        Job job = mJobFactory.obtainJob(url, mMemoryLruCache, mDiskCache, new MainThreadCallback() {
             @Override
             public void onSuccessed(Bitmap bitmap) {
                 if (null != bitmap) {

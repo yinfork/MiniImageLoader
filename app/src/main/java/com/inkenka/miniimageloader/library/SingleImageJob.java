@@ -1,5 +1,6 @@
 package com.inkenka.miniimageloader.library;
 
+import com.inkenka.miniimageloader.library.cache.DiskCache;
 import com.inkenka.miniimageloader.library.cache.MemoryLruCache;
 import com.inkenka.miniimageloader.library.net.NetworkManager;
 
@@ -7,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import java.io.InputStream;
@@ -16,15 +18,21 @@ import java.net.URL;
 /**
  * 图片请求任务类
  */
-public class SingleImageJob extends Job{
+public class SingleImageJob extends Job {
 
     private static final int MSG_COMPLETE = 1;
+
     private static final int MSG_EXCEPTION = 2;
+
     private static final int MSG_CANCELLED = 3;
 
     private String mUrl;
+
     private ImageHandler mImageHandler;
+
     private MemoryLruCache mMemoryLruCache;
+
+    private DiskCache<Bitmap> mDiskCache;
 
 
     public SingleImageJob() {
@@ -33,9 +41,14 @@ public class SingleImageJob extends Job{
 
 
     @Override
-    protected void init(String url, MemoryLruCache memoryLruCache, MainThreadCallback callback) {
+    protected void init(@NonNull String url,
+        @NonNull MemoryLruCache memoryLruCache,
+        @NonNull DiskCache<Bitmap> diskCache,
+        @NonNull MainThreadCallback callback) {
+
         mUrl = url;
         mMemoryLruCache = memoryLruCache;
+        mDiskCache = diskCache;
         mImageHandler = new ImageHandler(callback);
     }
 
@@ -45,19 +58,22 @@ public class SingleImageJob extends Job{
             return;
         }
 
-
         Message msg = mImageHandler.obtainMessage();
 
         try {
             Bitmap bitmap = null;
 
-            if(null != mMemoryLruCache){
+            if (null != mMemoryLruCache) {
                 bitmap = mMemoryLruCache.get(mUrl);
             }
-            if(null == bitmap) {
-                bitmap = NetworkManager.requestImageFromUrl(mUrl);
 
-                mMemoryLruCache.put(mUrl,bitmap);
+            if(null == bitmap && null != mDiskCache) {
+                bitmap = mDiskCache.get(mUrl);
+            }
+
+            if (null == bitmap) {
+                bitmap = NetworkManager.requestImageFromUrl(mUrl,mDiskCache);
+                mMemoryLruCache.put(mUrl, bitmap);
             }
 
             if (null != bitmap) {

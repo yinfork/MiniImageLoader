@@ -17,7 +17,7 @@ public class SingleImageDemoActivity extends AppCompatActivity {
         ImageView imageView = (ImageView) findViewById(R.id.image);
 
 
-        MiniImageLoader.get().loadImage("http://img.my.csdn.net/uploads/201407/26/1406383299_1976.jpg",imageView);
+        MiniImageLoader.get(getApplicationContext()).loadImage("http://img.my.csdn.net/uploads/201407/26/1406383299_1976.jpg",imageView);
     }
 
 }
